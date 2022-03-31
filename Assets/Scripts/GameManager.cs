@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    private ScriptableImage[] sImages;
-    private static int sImageIndex = 0;
+    private SetObjects[] questionSetImages;
+    private static int setImageIndex = 0;
+
     [SerializeField]
     private RectTransform background;
     [SerializeField]
@@ -20,16 +21,17 @@ public class GameManager : MonoBehaviour
 
     public static GameManager gameManager;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (gameManager != this || gameManager == null)
         {
             gameManager = this;
             DontDestroyOnLoad(gameManager);
         }
-        background.GetComponent<BaseCarouselScript>().sImage = sImages[sImageIndex];
-        middleground.GetComponent<BaseCarouselScript>().sImage = sImages[sImageIndex];
-        foreground.GetComponent<BaseCarouselScript>().sImage = sImages[sImageIndex];
+
+        background.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
+        middleground.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
+        foreground.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
     }
 
     // Update is called once per frame
@@ -56,12 +58,12 @@ public class GameManager : MonoBehaviour
 
     public void MoveToNextSequence()
     {
-        sImageIndex++;
-        if (sImageIndex > (sImages.Length - 1))
-            sImageIndex = 0;
-        Debug.Log("Current Image Index: " + sImageIndex);
-        background.GetComponent<BaseCarouselScript>().sImage = sImages[sImageIndex];
-        middleground.GetComponent<BaseCarouselScript>().sImage = sImages[sImageIndex];
-        foreground.GetComponent<BaseCarouselScript>().sImage = sImages[sImageIndex];
+        setImageIndex++;
+        if (setImageIndex > (questionSetImages.Length - 1))
+            setImageIndex = 0;
+        Debug.Log("Current Image Index: " + setImageIndex);
+        background.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
+        middleground.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
+        foreground.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
     }
 }

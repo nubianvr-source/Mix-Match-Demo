@@ -7,7 +7,11 @@ using UnityEngine.UI;
 public class BaseCarouselScript : MonoBehaviour
 {
     public RectTransform[] images;
-    public ScriptableImage sImage;
+    
+    //To make changes here...
+    public SetObjects setImages;
+
+
     /// <summary>
     /// For background, the groundNumber would be 0;
     /// For middleground, the groundNumber would be 1;
@@ -58,21 +62,22 @@ public class BaseCarouselScript : MonoBehaviour
             case 0:
                 for (int i = 0; i <= images.Length - 1; i++)
                 {
-                    images[i].GetComponent<Image>().sprite = sImage.backgroundImages[i];
+                    //images[i].GetComponent<Image>().sprite = setImages.backgroundImages[i];
+                    images[i].GetComponent<Image>().sprite = setImages.backgroundImagess[i].image;
                 }
                 break;
 
             case 1:
                 for (int i = 0; i <= images.Length - 1; i++)
                 {
-                    images[i].GetComponent<Image>().sprite = sImage.middlegroundImages[i];
+                    images[i].GetComponent<Image>().sprite = setImages.middlegroundImagess[i].image;
                 }
                 break;
 
             case 2:
                 for (int i = 0; i <= images.Length - 1; i++)
                 {
-                    images[i].GetComponent<Image>().sprite = sImage.foregroundImages[i];
+                    images[i].GetComponent<Image>().sprite = setImages.foregroundImagess[i].image;
                 }
                 break;
 
@@ -220,21 +225,25 @@ public class BaseCarouselScript : MonoBehaviour
         lerpPosition = (image_width + image_gap) * currentIndex;
     }
 
+
+    //To make changes here...
     public int GetImagePoint()
     {
         if(groundNumber == 0)
         {
-            return sImage.backgroundImagePoints[currentIndex];
+            //return setImages.backgroundImagePoints[currentIndex];
+            return setImages.backgroundImagess[currentIndex].imagePoint;
         }
         else if(groundNumber == 1)
         {
-            return sImage.middlegroundImagePoints[currentIndex];
+            //return setImages.middlegroundImagePoints[currentIndex];
+            return setImages.middlegroundImagess[currentIndex].imagePoint;
         }
         else
         {
-            return sImage.foregroundImagePoints[currentIndex];
+           // return setImages.foregroundImagePoints[currentIndex];
+            return setImages.foregroundImagess[currentIndex].imagePoint;
         }
     }
     #endregion
-    
 }
