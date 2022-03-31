@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: Images 1
   m_EditorClassIdentifier: 
   backgroundImages:
-  - {fileID: 21300000, guid: 7ae543e034888104da1720bce4414f3a, type: 3}
-  - {fileID: 21300000, guid: 7ae543e034888104da1720bce4414f3a, type: 3}
-  - {fileID: 21300000, guid: 7ae543e034888104da1720bce4414f3a, type: 3}
+  - {fileID: 21300000, guid: 37d4cc7c330a23341af57c63f18067c9, type: 3}
+  - {fileID: 21300000, guid: 4f819afdee2ccfa46b420f5fe80814f3, type: 3}
+  - {fileID: 21300000, guid: d32b4842acab89c47b50b0aa183298f6, type: 3}
   backgroundImagePoints: 1e000000140000000a000000
   middlegroundImages:
-  - {fileID: 21300000, guid: 7ae543e034888104da1720bce4414f3a, type: 3}
-  - {fileID: 21300000, guid: 7ae543e034888104da1720bce4414f3a, type: 3}
-  - {fileID: 21300000, guid: 7ae543e034888104da1720bce4414f3a, type: 3}
+  - {fileID: 21300000, guid: 17d686e5858d29e419ee8bae1d3945b1, type: 3}
+  - {fileID: 21300000, guid: 8c2f8f621443bf240bc561b6f67bfbc4, type: 3}
+  - {fileID: 21300000, guid: 7bd540bb6c7a2024c8040f2020cea93d, type: 3}
   middlegroundImagePoints: 0a0000001e00000014000000
   foregroundImages:
-  - {fileID: 21300000, guid: 7ae543e034888104da1720bce4414f3a, type: 3}
-  - {fileID: 21300000, guid: 7ae543e034888104da1720bce4414f3a, type: 3}
-  - {fileID: 21300000, guid: 7ae543e034888104da1720bce4414f3a, type: 3}
+  - {fileID: 21300000, guid: a31da88897ac0a94e9b5505c355bfef1, type: 3}
+  - {fileID: 21300000, guid: 484818749cc488e41b77c3bb74ab4fe5, type: 3}
+  - {fileID: 21300000, guid: 230740c9786b9f248aabe34f79f4c0c1, type: 3}
   foregroundImagePoints: 140000001e0000000a000000
