@@ -3,14 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 public class BaseCarouselScript : MonoBehaviour
 {
-  
     public RectTransform[] images;
+    public ScriptableImage sImage;
+    /// <summary>
+    /// For background, the groundNumber would be 0;
+    /// For middleground, the groundNumber would be 1;
+    /// For foreground, the groundNumber would be 2;
+    /// </summary>
+    [SerializeField]
+    private int groundNumber;
     public RectTransform view_window;
-   
+
     private bool  canSwipe;
     private float image_width;
     private float lerpTimer;
@@ -20,22 +26,23 @@ public class BaseCarouselScript : MonoBehaviour
     private float dragAmount;
     private float screenPosition;
     private float lastScreenPosition;
+
     /// <summary>
     /// Space between images.
     /// </summary>
-    public  float image_gap             = 30;
-
-    public int swipeThrustHold          = 150;
+    public  float image_gap = 30;
+    public int swipeThrustHold = 150;
     [HideInInspector]
     /// <summary>
     /// The index of the current image on display.
     /// </summary>
-    public int current_index;
-
+    public int currentIndex;
+    
     private CanvasGroup canvas;
 
     private void Awake()
     {
+        //Get canvas object present in the scene...
         canvas = gameObject.GetComponent<CanvasGroup>();
     }
 
@@ -44,20 +51,52 @@ public class BaseCarouselScript : MonoBehaviour
     // Use this for initialization
     public virtual void Start ()
     {
-        current_index = 0;
+        currentIndex = 0;
         image_width = view_window.rect.width;
+        switch(groundNumber)
+        {
+            case 0:
+                for (int i = 0; i <= images.Length - 1; i++)
+                {
+                    images[i].GetComponent<Image>().sprite = sImage.backgroundImages[i];
+                }
+                break;
+
+            case 1:
+                for (int i = 0; i <= images.Length - 1; i++)
+                {
+                    images[i].GetComponent<Image>().sprite = sImage.middlegroundImages[i];
+                }
+                break;
+
+            case 2:
+                for (int i = 0; i <= images.Length - 1; i++)
+                {
+                    images[i].GetComponent<Image>().sprite = sImage.foregroundImages[i];
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        
         for (int i = 1; i < images.Length; i++)
         {
+            //Set the anchored point of images of index 1 and above on the x- axis to the sum of the image width and image gap(Distance from the origin) multiplied by the index value...
             images[i].anchoredPosition = new Vector2(((image_width + image_gap) * i), 0);
         }
+       
     }
     
 
     // Update is called once per frame
     public virtual void Update () {
 
+        //Check if the canvas object is set to interactable...
         if (canvas.interactable)
         {
+
             lerpTimer = lerpTimer + Time.deltaTime;
 
             if (lerpTimer < 0.333f)
@@ -87,11 +126,11 @@ public class BaseCarouselScript : MonoBehaviour
             {
                 canSwipe = false;
                 lastScreenPosition = screenPosition;
-                if (current_index < images.Length)
+                if (currentIndex < images.Length)
                     OnSwipeComplete();
-                else if (current_index == images.Length && dragAmount < 0)
+                else if (currentIndex == images.Length && dragAmount < 0)
                     lerpTimer = 0;
-                else if (current_index == images.Length && dragAmount > 0)
+                else if (currentIndex == images.Length && dragAmount > 0)
                     OnSwipeComplete();
             }
 
@@ -108,22 +147,22 @@ public class BaseCarouselScript : MonoBehaviour
     public virtual void OnSwipeComplete()
     {
         lastScreenPosition = screenPosition;
-
+        //If user swipes left...
         if (dragAmount > 0)
         {
             if (dragAmount >= swipeThrustHold)
             {
-                if (current_index == 0)
+                if (currentIndex == 0)
                 {
                     lerpTimer = 0; lerpPosition = 0;
                 }
                 else
                 {
-                    current_index--;
+                    currentIndex--;
                     lerpTimer = 0;
-                    if (current_index < 0)
-                        current_index = 0;
-                    lerpPosition = (image_width + image_gap) * current_index;
+                    if (currentIndex < 0)
+                        currentIndex = 0;
+                    lerpPosition = (image_width + image_gap) * currentIndex;
                 }
             }
             else
@@ -131,20 +170,21 @@ public class BaseCarouselScript : MonoBehaviour
                 lerpTimer = 0;
             }
         }
+        //If user swipes right...
         else if (dragAmount < 0)
         {
             if (Mathf.Abs(dragAmount) >= swipeThrustHold)
             {
-                if (current_index == images.Length-1)
+                if (currentIndex == images.Length-1)
                 {
                     lerpTimer = 0;
-                    lerpPosition = (image_width + image_gap) * current_index;
+                    lerpPosition = (image_width + image_gap) * currentIndex;
                 }
                 else
                 {
                     lerpTimer = 0;
-                    current_index++;
-                    lerpPosition = (image_width + image_gap) * current_index;
+                    currentIndex++;
+                    lerpPosition = (image_width + image_gap) * currentIndex;
                 }
             }
             else
@@ -162,9 +202,9 @@ public class BaseCarouselScript : MonoBehaviour
     #region public methods
     public void GoToIndex(int value)
     {
-        current_index = value;
+        currentIndex = value;
         lerpTimer = 0;
-        lerpPosition = (image_width + image_gap) * current_index;
+        lerpPosition = (image_width + image_gap) * currentIndex;
         screenPosition = lerpPosition * -1;
         lastScreenPosition = screenPosition;
         for (int i = 0; i < images.Length; i++)
@@ -175,9 +215,25 @@ public class BaseCarouselScript : MonoBehaviour
 
     public void GoToIndexSmooth(int value)
     {
-        current_index = value;
+        currentIndex = value;
         lerpTimer = 0;
-        lerpPosition = (image_width + image_gap) * current_index;
+        lerpPosition = (image_width + image_gap) * currentIndex;
+    }
+
+    public int GetImagePoint()
+    {
+        if(groundNumber == 0)
+        {
+            return sImage.backgroundImagePoints[currentIndex];
+        }
+        else if(groundNumber == 1)
+        {
+            return sImage.middlegroundImagePoints[currentIndex];
+        }
+        else
+        {
+            return sImage.foregroundImagePoints[currentIndex];
+        }
     }
     #endregion
     
