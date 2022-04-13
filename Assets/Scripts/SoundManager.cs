@@ -24,7 +24,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager soundManager;
 
     //public AudioMixerGroup mixerGroup;
-    
+
     public Sound[] sounds;
 
     void Awake()
@@ -41,32 +41,24 @@ public class SoundManager : MonoBehaviour
         
         DontDestroyOnLoad(gameObject);
 
-
-
         foreach (Sound s in sounds)
         {
-            s.source = gameObject.AddComponent<AudioSource>();
+            //s.source = gameObject.AddComponent<AudioSource>();
+            s.source = gameObject.GetComponent<AudioSource>();
             s.source.clip = s.clip;
             s.source.loop = s.loop;
             s.source.volume = s.volume;
-
            //s.source.outputAudioMixerGroup = mixerGroup;
         }
-        
-       
     }
 
     private void Start()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
-        int buildIndex = currentScene.buildIndex;
-
+        
     }
 
     public void PlayAudio(string sound)
     {
-        if(PlayerPrefs.GetInt("PlayMusic") != 1)
-            return;
         Sound s = Array.Find(sounds, item => item.name == sound);
         if (s == null)
         {
@@ -78,8 +70,6 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySFX(string sound)
     {
-        if(PlayerPrefs.GetInt("PlaySFX") != 1)
-            return;
         Sound s = Array.Find(sounds, item => item.name == sound);
         if (s == null)
         {

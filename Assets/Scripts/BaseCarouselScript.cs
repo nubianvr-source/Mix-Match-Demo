@@ -14,8 +14,10 @@ public class BaseCarouselScript : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int groundNumber;
+
     //List/Array of Image objects attached to the gameobject this script is attached to...
-    public Image[] imagesObjects;
+    public Image[] imageObjects;
+
     [HideInInspector]
     //Set of images for this phase of trivia...
     public SetObjects setImages;
@@ -59,10 +61,10 @@ public class BaseCarouselScript : MonoBehaviour
         image_width = view_window.rect.width;
        
         SetImageObjects();
-        for (int i = 1; i < imagesObjects.Length; i++)
+        for (int i = 1; i < imageObjects.Length; i++)
         {
             //Set the anchored point of images of index 1 and above on the x- axis to the sum of the image width and image gap(Distance from the origin) multiplied by the index value...
-            imagesObjects[i].rectTransform.anchoredPosition = new Vector2(((image_width + image_gap) * i), 0);
+            imageObjects[i].rectTransform.anchoredPosition = new Vector2(((image_width + image_gap) * i), 0);
         }
     }
     
@@ -73,25 +75,25 @@ public class BaseCarouselScript : MonoBehaviour
         {
             //For background...
             case 0:
-                for (int i = 0; i <= imagesObjects.Length - 1; i++)
+                for (int i = 0; i <= imageObjects.Length - 1; i++)
                 {
-                    imagesObjects[i].sprite = setImages.backgroundImages[i].image;
+                    imageObjects[i].sprite = setImages.backgroundImages[i].image;
                 }
                 break;
 
             //For middleground...
             case 1:
-                for (int i = 0; i <= imagesObjects.Length - 1; i++)
+                for (int i = 0; i <= imageObjects.Length - 1; i++)
                 {
-                    imagesObjects[i].sprite = setImages.middlegroundImages[i].image;
+                    imageObjects[i].sprite = setImages.middlegroundImages[i].image;
                 }
                 break;
 
             //For foreground...
             case 2:
-                for (int i = 0; i <= imagesObjects.Length - 1; i++)
+                for (int i = 0; i <= imageObjects.Length - 1; i++)
                 {
-                    imagesObjects[i].sprite = setImages.foregroundImages[i].image;
+                    imageObjects[i].sprite = setImages.foregroundImages[i].image;
                 }
                 break;
 
@@ -135,17 +137,17 @@ public class BaseCarouselScript : MonoBehaviour
             {
                 canSwipe = false;
                 lastScreenPosition = screenPosition;
-                if (currentIndex < imagesObjects.Length)
+                if (currentIndex < imageObjects.Length)
                     OnSwipeComplete();
-                else if (currentIndex == imagesObjects.Length && dragAmount < 0)
+                else if (currentIndex == imageObjects.Length && dragAmount < 0)
                     lerpTimer = 0;
-                else if (currentIndex == imagesObjects.Length && dragAmount > 0)
+                else if (currentIndex == imageObjects.Length && dragAmount > 0)
                     OnSwipeComplete();
             }
 
-            for (int i = 0; i < imagesObjects.Length; i++)
+            for (int i = 0; i < imageObjects.Length; i++)
             {
-                imagesObjects[i].rectTransform.anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
+                imageObjects[i].rectTransform.anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
             }
         }
     }
@@ -184,7 +186,7 @@ public class BaseCarouselScript : MonoBehaviour
         {
             if (Mathf.Abs(dragAmount) >= swipeThrustHold)
             {
-                if (currentIndex == imagesObjects.Length-1)
+                if (currentIndex == imageObjects.Length-1)
                 {
                     lerpTimer = 0;
                     lerpPosition = (image_width + image_gap) * currentIndex;
@@ -215,9 +217,9 @@ public class BaseCarouselScript : MonoBehaviour
         lerpPosition = (image_width + image_gap) * currentIndex;
         screenPosition = lerpPosition * -1;
         lastScreenPosition = screenPosition;
-        for (int i = 0; i < imagesObjects.Length; i++)
+        for (int i = 0; i < imageObjects.Length; i++)
         {
-            imagesObjects[i].rectTransform.anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
+            imageObjects[i].rectTransform.anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
         }
     }
 

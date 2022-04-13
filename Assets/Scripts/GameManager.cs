@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private SetObjects[] questionSetImages;
-    private static int setImageIndex = 0;
+    private static int questionSetIndex = 0;
     [SerializeField]
     private BaseCarouselScript background;
     [SerializeField]
@@ -19,23 +19,26 @@ public class GameManager : MonoBehaviour
     public int totalPoints = 0;
 
     public static GameManager gameManager;
+
     // Start is called before the first frame update
     void Awake()
     {
-        //SoundManager.instance.PlaySFX("Swipe #1");
-        if (gameManager != this || gameManager == null)
+        SoundManager.soundManager.PlayAudio("Swipe #1");
+        if (gameManager == null)
         {
             gameManager = this;
         }
         else
         {
-            Destroy(gameManager);
+            Destroy(gameObject);
+            return;
         }
-        DontDestroyOnLoad(gameManager);
 
-        background.setImages = questionSetImages[setImageIndex];
-        middleground.setImages = questionSetImages[setImageIndex];
-        foreground.setImages = questionSetImages[setImageIndex];
+        DontDestroyOnLoad(gameObject);
+
+        background.setImages = questionSetImages[questionSetIndex];
+        middleground.setImages = questionSetImages[questionSetIndex];
+        foreground.setImages = questionSetImages[questionSetIndex];
     }
 
     // Update is called once per frame
@@ -62,12 +65,12 @@ public class GameManager : MonoBehaviour
 
     public void MoveToNextSequence()
     {
-        setImageIndex++;
-        if (setImageIndex > (questionSetImages.Length - 1))
-            setImageIndex = 0;
-        Debug.Log("Current Image Index: " + setImageIndex);
-        background.setImages = questionSetImages[setImageIndex];
-        middleground.setImages = questionSetImages[setImageIndex];
-        foreground.setImages = questionSetImages[setImageIndex];
+        questionSetIndex++;
+        if (questionSetIndex > (questionSetImages.Length - 1))
+            questionSetIndex = 0;
+        Debug.Log("Current Image Index: " + questionSetIndex);
+        background.setImages = questionSetImages[questionSetIndex];
+        middleground.setImages = questionSetImages[questionSetIndex];
+        foreground.setImages = questionSetImages[questionSetIndex];
     }
 }
