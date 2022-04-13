@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private SetObjects[] questionSetImages;
     private static int setImageIndex = 0;
-
     [SerializeField]
     private RectTransform background;
     [SerializeField]
@@ -23,11 +22,16 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        //SoundManager.instance.PlaySFX("Swipe #1");
         if (gameManager != this || gameManager == null)
         {
             gameManager = this;
-            DontDestroyOnLoad(gameManager);
         }
+        else
+        {
+            Destroy(gameManager);
+        }
+        DontDestroyOnLoad(gameManager);
 
         background.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
         middleground.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];

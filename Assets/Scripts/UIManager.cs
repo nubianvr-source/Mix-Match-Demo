@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Runtime.InteropServices;
 
 public class UIManager : MonoBehaviour
 {
+    [DllImport("__Internal")]
+    private static extern void printPoints(int score);
+
     [SerializeField]
     private TMP_Text scoreText;
     // Start is called before the first frame update
@@ -23,5 +27,9 @@ public class UIManager : MonoBehaviour
     {
         scoreText.text = "Score: " + GameManager.gameManager.totalPoints;
         scoreText.gameObject.SetActive(true);
+
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    printPoints ( GameManager.gameManager.totalPoints);
+#endif
     }
 }

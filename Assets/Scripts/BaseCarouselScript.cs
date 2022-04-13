@@ -6,19 +6,19 @@ using TMPro;
 using UnityEngine.UI;
 public class BaseCarouselScript : MonoBehaviour
 {
-    public RectTransform[] images;
-    
-    //To make changes here...
-    public SetObjects setImages;
-
-
     /// <summary>
-    /// For background, the groundNumber would be 0;
-    /// For middleground, the groundNumber would be 1;
-    /// For foreground, the groundNumber would be 2;
+    /// Used to select the respective image for the gameobject this script is attached to...
+    /// For background, the groundNumber would be 0...
+    /// For middleground, the groundNumber would be 1...
+    /// For foreground, the groundNumber would be 2...
     /// </summary>
     [SerializeField]
     private int groundNumber;
+    //List/Array of Image objects attached to the gameobject this script is attached to...
+    public RectTransform[] imagesObjects;
+    [HideInInspector]
+    //Set of images for this phase of trivia...
+    public SetObjects setImages;
     public RectTransform view_window;
 
     private bool  canSwipe;
@@ -57,27 +57,30 @@ public class BaseCarouselScript : MonoBehaviour
     {
         currentIndex = 0;
         image_width = view_window.rect.width;
+        //Set Images/Sprites for the images objects parented by the gameobject this script is attached to based on the set ground number...
         switch(groundNumber)
         {
+            //For background...
             case 0:
-                for (int i = 0; i <= images.Length - 1; i++)
+                for (int i = 0; i <= imagesObjects.Length - 1; i++)
                 {
-                    //images[i].GetComponent<Image>().sprite = setImages.backgroundImages[i];
-                    images[i].GetComponent<Image>().sprite = setImages.backgroundImagess[i].image;
+                    imagesObjects[i].GetComponent<Image>().sprite = setImages.backgroundImages[i].image;
                 }
                 break;
-
+                
+            //For middleground...
             case 1:
-                for (int i = 0; i <= images.Length - 1; i++)
+                for (int i = 0; i <= imagesObjects.Length - 1; i++)
                 {
-                    images[i].GetComponent<Image>().sprite = setImages.middlegroundImagess[i].image;
+                    imagesObjects[i].GetComponent<Image>().sprite = setImages.middlegroundImages[i].image;
                 }
                 break;
 
+            //For foreground...
             case 2:
-                for (int i = 0; i <= images.Length - 1; i++)
+                for (int i = 0; i <= imagesObjects.Length - 1; i++)
                 {
-                    images[i].GetComponent<Image>().sprite = setImages.foregroundImagess[i].image;
+                    imagesObjects[i].GetComponent<Image>().sprite = setImages.foregroundImages[i].image;
                 }
                 break;
 
@@ -86,10 +89,10 @@ public class BaseCarouselScript : MonoBehaviour
         }
 
         
-        for (int i = 1; i < images.Length; i++)
+        for (int i = 1; i < imagesObjects.Length; i++)
         {
             //Set the anchored point of images of index 1 and above on the x- axis to the sum of the image width and image gap(Distance from the origin) multiplied by the index value...
-            images[i].anchoredPosition = new Vector2(((image_width + image_gap) * i), 0);
+            imagesObjects[i].anchoredPosition = new Vector2(((image_width + image_gap) * i), 0);
         }
        
     }
@@ -97,6 +100,7 @@ public class BaseCarouselScript : MonoBehaviour
 
     // Update is called once per frame
     public virtual void Update () {
+
 
         //Check if the canvas object is set to interactable...
         if (canvas.interactable)
@@ -131,17 +135,17 @@ public class BaseCarouselScript : MonoBehaviour
             {
                 canSwipe = false;
                 lastScreenPosition = screenPosition;
-                if (currentIndex < images.Length)
+                if (currentIndex < imagesObjects.Length)
                     OnSwipeComplete();
-                else if (currentIndex == images.Length && dragAmount < 0)
+                else if (currentIndex == imagesObjects.Length && dragAmount < 0)
                     lerpTimer = 0;
-                else if (currentIndex == images.Length && dragAmount > 0)
+                else if (currentIndex == imagesObjects.Length && dragAmount > 0)
                     OnSwipeComplete();
             }
 
-            for (int i = 0; i < images.Length; i++)
+            for (int i = 0; i < imagesObjects.Length; i++)
             {
-                images[i].anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
+                imagesObjects[i].anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
             }
         }
     }
@@ -180,7 +184,7 @@ public class BaseCarouselScript : MonoBehaviour
         {
             if (Mathf.Abs(dragAmount) >= swipeThrustHold)
             {
-                if (currentIndex == images.Length-1)
+                if (currentIndex == imagesObjects.Length-1)
                 {
                     lerpTimer = 0;
                     lerpPosition = (image_width + image_gap) * currentIndex;
@@ -198,7 +202,6 @@ public class BaseCarouselScript : MonoBehaviour
             }
         }
         dragAmount = 0;
-
     }
     #endregion
 
@@ -212,9 +215,9 @@ public class BaseCarouselScript : MonoBehaviour
         lerpPosition = (image_width + image_gap) * currentIndex;
         screenPosition = lerpPosition * -1;
         lastScreenPosition = screenPosition;
-        for (int i = 0; i < images.Length; i++)
+        for (int i = 0; i < imagesObjects.Length; i++)
         {
-            images[i].anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
+            imagesObjects[i].anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
         }
     }
 
@@ -231,18 +234,15 @@ public class BaseCarouselScript : MonoBehaviour
     {
         if(groundNumber == 0)
         {
-            //return setImages.backgroundImagePoints[currentIndex];
-            return setImages.backgroundImagess[currentIndex].imagePoint;
+            return setImages.backgroundImages[currentIndex].imagePoint;
         }
         else if(groundNumber == 1)
         {
-            //return setImages.middlegroundImagePoints[currentIndex];
-            return setImages.middlegroundImagess[currentIndex].imagePoint;
+            return setImages.middlegroundImages[currentIndex].imagePoint;
         }
         else
         {
-           // return setImages.foregroundImagePoints[currentIndex];
-            return setImages.foregroundImagess[currentIndex].imagePoint;
+            return setImages.foregroundImages[currentIndex].imagePoint;
         }
     }
     #endregion
