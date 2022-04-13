@@ -14,7 +14,7 @@ public class Sound
     //[Range(.1f, 3f)] public float pitch = 1.0f;
 
     public bool loop = false;
-    public AudioMixerGroup mixerGroup;
+    //public AudioMixerGroup mixerGroup;
     [HideInInspector] 
     public AudioSource source;
 }
@@ -23,7 +23,7 @@ public class SoundManager : MonoBehaviour
     
     public static SoundManager soundManager;
 
-    public AudioMixerGroup mixerGroup;
+    //public AudioMixerGroup mixerGroup;
     
     public Sound[] sounds;
 
@@ -50,7 +50,7 @@ public class SoundManager : MonoBehaviour
             s.source.loop = s.loop;
             s.source.volume = s.volume;
 
-            s.source.outputAudioMixerGroup = mixerGroup;
+           //s.source.outputAudioMixerGroup = mixerGroup;
         }
         
        

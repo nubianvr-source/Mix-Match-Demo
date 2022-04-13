@@ -15,7 +15,7 @@ public class BaseCarouselScript : MonoBehaviour
     [SerializeField]
     private int groundNumber;
     //List/Array of Image objects attached to the gameobject this script is attached to...
-    public RectTransform[] imagesObjects;
+    public Image[] imagesObjects;
     [HideInInspector]
     //Set of images for this phase of trivia...
     public SetObjects setImages;
@@ -57,22 +57,33 @@ public class BaseCarouselScript : MonoBehaviour
     {
         currentIndex = 0;
         image_width = view_window.rect.width;
+       
+        SetImageObjects();
+        for (int i = 1; i < imagesObjects.Length; i++)
+        {
+            //Set the anchored point of images of index 1 and above on the x- axis to the sum of the image width and image gap(Distance from the origin) multiplied by the index value...
+            imagesObjects[i].rectTransform.anchoredPosition = new Vector2(((image_width + image_gap) * i), 0);
+        }
+    }
+    
+    private void SetImageObjects()
+    {
         //Set Images/Sprites for the images objects parented by the gameobject this script is attached to based on the set ground number...
-        switch(groundNumber)
+        switch (groundNumber)
         {
             //For background...
             case 0:
                 for (int i = 0; i <= imagesObjects.Length - 1; i++)
                 {
-                    imagesObjects[i].GetComponent<Image>().sprite = setImages.backgroundImages[i].image;
+                    imagesObjects[i].sprite = setImages.backgroundImages[i].image;
                 }
                 break;
-                
+
             //For middleground...
             case 1:
                 for (int i = 0; i <= imagesObjects.Length - 1; i++)
                 {
-                    imagesObjects[i].GetComponent<Image>().sprite = setImages.middlegroundImages[i].image;
+                    imagesObjects[i].sprite = setImages.middlegroundImages[i].image;
                 }
                 break;
 
@@ -80,28 +91,18 @@ public class BaseCarouselScript : MonoBehaviour
             case 2:
                 for (int i = 0; i <= imagesObjects.Length - 1; i++)
                 {
-                    imagesObjects[i].GetComponent<Image>().sprite = setImages.foregroundImages[i].image;
+                    imagesObjects[i].sprite = setImages.foregroundImages[i].image;
                 }
                 break;
 
             default:
                 break;
         }
-
-        
-        for (int i = 1; i < imagesObjects.Length; i++)
-        {
-            //Set the anchored point of images of index 1 and above on the x- axis to the sum of the image width and image gap(Distance from the origin) multiplied by the index value...
-            imagesObjects[i].anchoredPosition = new Vector2(((image_width + image_gap) * i), 0);
-        }
-       
     }
-    
 
     // Update is called once per frame
-    public virtual void Update () {
-
-
+    public virtual void Update () 
+    {
         //Check if the canvas object is set to interactable...
         if (canvas.interactable)
         {
@@ -119,7 +120,6 @@ public class BaseCarouselScript : MonoBehaviour
                 canSwipe = true;
                 mousePositionStartX = Input.mousePosition.x;
             }
-
 
             if (Input.GetMouseButton(0))
             {
@@ -145,7 +145,7 @@ public class BaseCarouselScript : MonoBehaviour
 
             for (int i = 0; i < imagesObjects.Length; i++)
             {
-                imagesObjects[i].anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
+                imagesObjects[i].rectTransform.anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
             }
         }
     }
@@ -217,7 +217,7 @@ public class BaseCarouselScript : MonoBehaviour
         lastScreenPosition = screenPosition;
         for (int i = 0; i < imagesObjects.Length; i++)
         {
-            imagesObjects[i].anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
+            imagesObjects[i].rectTransform.anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
         }
     }
 

@@ -9,11 +9,11 @@ public class GameManager : MonoBehaviour
     private SetObjects[] questionSetImages;
     private static int setImageIndex = 0;
     [SerializeField]
-    private RectTransform background;
+    private BaseCarouselScript background;
     [SerializeField]
-    private RectTransform middleground;
+    private BaseCarouselScript middleground;
     [SerializeField]
-    private RectTransform foreground;
+    private BaseCarouselScript foreground;
 
     [HideInInspector]
     public int totalPoints = 0;
@@ -33,9 +33,9 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameManager);
 
-        background.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
-        middleground.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
-        foreground.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
+        background.setImages = questionSetImages[setImageIndex];
+        middleground.setImages = questionSetImages[setImageIndex];
+        foreground.setImages = questionSetImages[setImageIndex];
     }
 
     // Update is called once per frame
@@ -66,8 +66,8 @@ public class GameManager : MonoBehaviour
         if (setImageIndex > (questionSetImages.Length - 1))
             setImageIndex = 0;
         Debug.Log("Current Image Index: " + setImageIndex);
-        background.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
-        middleground.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
-        foreground.GetComponent<BaseCarouselScript>().setImages = questionSetImages[setImageIndex];
+        background.setImages = questionSetImages[setImageIndex];
+        middleground.setImages = questionSetImages[setImageIndex];
+        foreground.setImages = questionSetImages[setImageIndex];
     }
 }

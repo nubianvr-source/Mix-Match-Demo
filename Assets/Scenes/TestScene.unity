@@ -190,9 +190,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundNumber: 2
   imagesObjects:
-  - {fileID: 1788040034}
-  - {fileID: 2043858584}
-  - {fileID: 937683181}
+  - {fileID: 1788040035}
+  - {fileID: 2043858585}
+  - {fileID: 937683182}
   setImages: {fileID: 0}
   view_window: {fileID: 1788040034}
   image_gap: 1000
@@ -608,9 +608,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundNumber: 0
   imagesObjects:
-  - {fileID: 274871780}
-  - {fileID: 1985783546}
-  - {fileID: 840073913}
+  - {fileID: 274871781}
+  - {fileID: 1985783547}
+  - {fileID: 840073914}
   setImages: {fileID: 0}
   view_window: {fileID: 274871780}
   image_gap: 1000
@@ -999,9 +999,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundNumber: 1
   imagesObjects:
-  - {fileID: 2018697165}
-  - {fileID: 858390825}
-  - {fileID: 1370361213}
+  - {fileID: 2018697166}
+  - {fileID: 858390826}
+  - {fileID: 1370361214}
   setImages: {fileID: 0}
   view_window: {fileID: 2018697165}
   image_gap: 1000
@@ -2611,9 +2611,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questionSetImages:
   - {fileID: 11400000, guid: 5747972059e1bba4492d7b7372c9625a, type: 2}
-  background: {fileID: 482752593}
-  middleground: {fileID: 754104453}
-  foreground: {fileID: 195054751}
+  background: {fileID: 482752595}
+  middleground: {fileID: 754104455}
+  foreground: {fileID: 195054753}
   totalPoints: 0
 --- !u!4 &1476848116
 Transform:
@@ -2930,13 +2930,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff67f338dcbbbc64bbd92861cb3bf187, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixerGroup: {fileID: 0}
   sounds:
   - name: Swipe #1
     clip: {fileID: 8300000, guid: 99373f9f72c924244aecc1bcd5641909, type: 3}
     volume: 1
     loop: 0
-    mixerGroup: {fileID: 0}
     source: {fileID: 0}
 --- !u!4 &1826276386
 Transform:
