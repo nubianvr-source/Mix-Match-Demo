@@ -15,12 +15,17 @@ public class BaseCarouselScript : MonoBehaviour
     [SerializeField]
     private int groundNumber;
 
-    //List/Array of Image objects attached to the gameobject this script is attached to...
-    public Image[] imageObjects;
+
+    //List/Array of image components attached to the gameobject this script is attached to...
+    public Image[] images;
 
     [HideInInspector]
     //Set of images for this phase of trivia...
     public SetObjects setImages;
+    
+    //NB: Subjected to change if necessary...
+    private ImageObject[] currentImageObjects = new ImageObject [3];
+
     public RectTransform view_window;
 
     private bool  canSwipe;
@@ -33,18 +38,18 @@ public class BaseCarouselScript : MonoBehaviour
     private float screenPosition;
     private float lastScreenPosition;
 
-    /// <summary>
-    /// Space between images.
-    /// </summary>
-    public  float image_gap = 30;
+    // Space between images...
+    public float image_gap = 30;
     public int swipeThrustHold = 150;
+
+    // The index of the current image on display...
     [HideInInspector]
-    /// <summary>
-    /// The index of the current image on display.
-    /// </summary>
     public int currentIndex;
     
     private CanvasGroup canvas;
+
+    [SerializeField]
+    private AudioSource audioSource;
 
     private void Awake()
     {
@@ -54,18 +59,22 @@ public class BaseCarouselScript : MonoBehaviour
 
 
     #region mono
-    // Use this for initialization
+    // Use this for initialization...
     public virtual void Start ()
     {
         currentIndex = 0;
         image_width = view_window.rect.width;
        
         SetImageObjects();
-        for (int i = 1; i < imageObjects.Length; i++)
+        
+        for (int i = 1; i < images.Length; i++)
         {
             //Set the anchored point of images of index 1 and above on the x- axis to the sum of the image width and image gap(Distance from the origin) multiplied by the index value...
-            imageObjects[i].rectTransform.anchoredPosition = new Vector2(((image_width + image_gap) * i), 0);
+            images[i].rectTransform.anchoredPosition = new Vector2(((image_width + image_gap) * i), 0);
         }
+
+        //Play descriptive sound of first image object...
+        SoundManager.soundManager.PlayDescriptiveSound(currentImageObjects[currentIndex]);
     }
     
     private void SetImageObjects()
@@ -75,31 +84,36 @@ public class BaseCarouselScript : MonoBehaviour
         {
             //For background...
             case 0:
-                for (int i = 0; i <= imageObjects.Length - 1; i++)
+                for (int i = 0; i <= images.Length - 1; i++)
                 {
-                    imageObjects[i].sprite = setImages.backgroundImages[i].image;
+                    currentImageObjects[i] = setImages.backgroundImages[i];
+                    images[i].sprite = currentImageObjects[i].image;
                 }
                 break;
 
             //For middleground...
             case 1:
-                for (int i = 0; i <= imageObjects.Length - 1; i++)
+                for (int i = 0; i <= images.Length - 1; i++)
                 {
-                    imageObjects[i].sprite = setImages.middlegroundImages[i].image;
+                    currentImageObjects[i] = setImages.middlegroundImages[i];
+                    images[i].sprite = currentImageObjects[i].image;
                 }
                 break;
 
             //For foreground...
             case 2:
-                for (int i = 0; i <= imageObjects.Length - 1; i++)
+                for (int i = 0; i <= images.Length - 1; i++)
                 {
-                    imageObjects[i].sprite = setImages.foregroundImages[i].image;
+                    currentImageObjects[i] = setImages.foregroundImages[i];
+                    images[i].sprite = currentImageObjects[i].image;
                 }
                 break;
 
             default:
                 break;
         }
+
+        Debug.Log(gameObject.name + " has " + currentImageObjects.Length + " image objects...");
     }
 
     // Update is called once per frame
@@ -137,17 +151,19 @@ public class BaseCarouselScript : MonoBehaviour
             {
                 canSwipe = false;
                 lastScreenPosition = screenPosition;
-                if (currentIndex < imageObjects.Length)
+                if (currentIndex < images.Length)
+                {
                     OnSwipeComplete();
-                else if (currentIndex == imageObjects.Length && dragAmount < 0)
+                }
+                else if (currentIndex == images.Length && dragAmount < 0)
                     lerpTimer = 0;
-                else if (currentIndex == imageObjects.Length && dragAmount > 0)
+                else if (currentIndex == images.Length && dragAmount > 0)
                     OnSwipeComplete();
             }
 
-            for (int i = 0; i < imageObjects.Length; i++)
+            for (int i = 0; i < images.Length; i++)
             {
-                imageObjects[i].rectTransform.anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
+                images[i].rectTransform.anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
             }
         }
     }
@@ -174,6 +190,9 @@ public class BaseCarouselScript : MonoBehaviour
                     if (currentIndex < 0)
                         currentIndex = 0;
                     lerpPosition = (image_width + image_gap) * currentIndex;
+
+                    //Play sounds...
+                    PlaySounds();
                 }
             }
             else
@@ -186,7 +205,7 @@ public class BaseCarouselScript : MonoBehaviour
         {
             if (Mathf.Abs(dragAmount) >= swipeThrustHold)
             {
-                if (currentIndex == imageObjects.Length-1)
+                if (currentIndex == images.Length-1)
                 {
                     lerpTimer = 0;
                     lerpPosition = (image_width + image_gap) * currentIndex;
@@ -196,6 +215,10 @@ public class BaseCarouselScript : MonoBehaviour
                     lerpTimer = 0;
                     currentIndex++;
                     lerpPosition = (image_width + image_gap) * currentIndex;
+
+                    //Play sounds...
+                    PlaySounds();
+                   
                 }
             }
             else
@@ -204,6 +227,13 @@ public class BaseCarouselScript : MonoBehaviour
             }
         }
         dragAmount = 0;
+    }
+
+    private void PlaySounds()
+    {
+        SoundManager.soundManager.PlaySFX("Swipe");
+        SoundManager.soundManager.PlayDescriptiveSound(currentImageObjects[currentIndex]);
+        //SoundManager.soundManager.PlayReactionSound();
     }
     #endregion
 
@@ -217,9 +247,9 @@ public class BaseCarouselScript : MonoBehaviour
         lerpPosition = (image_width + image_gap) * currentIndex;
         screenPosition = lerpPosition * -1;
         lastScreenPosition = screenPosition;
-        for (int i = 0; i < imageObjects.Length; i++)
+        for (int i = 0; i < images.Length; i++)
         {
-            imageObjects[i].rectTransform.anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
+            images[i].rectTransform.anchoredPosition = new Vector2(screenPosition + ((image_width + image_gap) * i), 0);
         }
     }
 

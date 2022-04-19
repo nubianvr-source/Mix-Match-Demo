@@ -19,11 +19,11 @@ public class GameManager : MonoBehaviour
     public int totalPoints = 0;
 
     public static GameManager gameManager;
+    //public SoundManager soundManager;
 
     // Start is called before the first frame update
     void Awake()
     {
-        SoundManager.soundManager.PlayAudio("Swipe #1");
         if (gameManager == null)
         {
             gameManager = this;
@@ -36,9 +36,16 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        //Set SetImages in the base carousel script of these objects...
+        //The BaseCarousel Script depends on these lines of statements...
         background.setImages = questionSetImages[questionSetIndex];
         middleground.setImages = questionSetImages[questionSetIndex];
         foreground.setImages = questionSetImages[questionSetIndex];
+    }
+
+    private void Start()
+    {
+
     }
 
     // Update is called once per frame

@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 21300000, guid: 484818749cc488e41b77c3bb74ab4fe5, type: 3}
   imagePoint: 30
-  audioClips: []
-  descriptionText: {fileID: 0}
-  descriptionAudio: {fileID: 0}
+  descriptionText: 
+  descriptionAudio:
+    name: Two
+    clip: {fileID: 8300000, guid: cdbc20d7f2dcda0458aa6fc05d151d81, type: 3}
+    volume: 1
+    loop: 0
+    source: {fileID: 0}

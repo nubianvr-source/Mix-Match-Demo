@@ -9,7 +9,10 @@ public class ImageObject : ScriptableObject
 {
     public Sprite image;
     public int imagePoint = 0;
-    public AudioClip[] audioClips;
-    public TMP_Text descriptionText;
-    public AudioClip descriptionAudio;
+    //Commentary clips... Like Hmmm! Ahhhh! Ouuhhh!... Something like that...
+    //public AudioClip[] audioClips;
+    //public Sound[] audioClips;
+    public string descriptionText;
+    //public AudioClip descriptionAudio;
+    public Sound descriptionAudio;
 }
