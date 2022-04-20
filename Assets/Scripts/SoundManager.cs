@@ -28,7 +28,7 @@ public class SoundManager : MonoBehaviour
     public Sound[] SFX;
     public Sound[] reactionSounds;
 
-    private AudioSource audioSource;
+    private AudioSource[] audioSource;
     void Awake()
     {
         if (soundManager == null)
@@ -73,7 +73,7 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        audioSource = gameObject.GetComponent<AudioSource>();
+        
     }
   
     public void PlayGenericSound(string sound)
@@ -121,7 +121,7 @@ public class SoundManager : MonoBehaviour
         imageObject.descriptionAudio.source.Play();
     }
 
-    public void Stop(string sound)
+    public void StopGenericSound(string sound)
     {
         Sound s;
         s = Array.Find(genericSounds, item => item.name == sound);
@@ -134,7 +134,33 @@ public class SoundManager : MonoBehaviour
         s.source.Stop();
     }
 
-    public void Pause(string sound)
+    public void StopSFX(string sound)
+    {
+        Sound s;
+        s = Array.Find(SFX, item => item.name == sound);
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+
+        s.source.Stop();
+    }
+
+    public void StopReactionSound(string sound)
+    {
+        Sound s;
+        s = Array.Find(reactionSounds, item => item.name == sound);
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+
+        s.source.Stop();
+    }
+
+    public void PauseGenericSound(string sound)
     {
         Sound s = Array.Find(genericSounds, item => item.name == sound);
         if (s == null)
@@ -146,9 +172,49 @@ public class SoundManager : MonoBehaviour
         s.source.Pause();
     }
 
-    public void StopAllMusic()
+    public void PauseSFX(string sound)
+    {
+        Sound s = Array.Find(SFX, item => item.name == sound);
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+
+        s.source.Pause();
+    }
+
+    public void PauseReactionSound(string sound)
+    {
+        Sound s = Array.Find(reactionSounds, item => item.name == sound);
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+
+        s.source.Pause();
+    }
+
+    public void StopAllGenericSounds()
     {
         foreach (var s in genericSounds)
+        {
+            s.source.Stop();
+        }
+    }
+
+    public void StopAllSFX()
+    {
+        foreach (var s in SFX)
+        {
+            s.source.Stop();
+        }
+    }
+
+    public void StopAllReactionSounds()
+    {
+        foreach (var s in reactionSounds)
         {
             s.source.Stop();
         }
