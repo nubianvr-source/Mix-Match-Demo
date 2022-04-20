@@ -232,8 +232,8 @@ public class BaseCarouselScript : MonoBehaviour
     private void PlaySounds()
     {
         SoundManager.soundManager.PlaySFX("Swipe");
-        //SoundManager.soundManager.PlayDescriptiveSound(currentImageObjects[currentIndex]);
-        SoundManager.soundManager.PlayReactionSound();
+        SoundManager.soundManager.PlayDescriptiveSound(currentImageObjects[currentIndex]);
+        //SoundManager.soundManager.PlayReactionSound();
     }
     #endregion
 
