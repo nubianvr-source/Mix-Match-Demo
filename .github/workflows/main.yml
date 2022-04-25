@@ -1,4 +1,4 @@
-name: COVID Game CI
+name: Online Safety Game CI
 
 on: push
 
@@ -54,7 +54,7 @@ jobs:
           name: Test results (${{ matrix.testMode }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
 
- buildWebGL:
+  buildWebGL:
     needs: testRunner
     name: Build for WebGL 🖥️
     runs-on: ubuntu-latest
