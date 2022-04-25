@@ -54,7 +54,6 @@ jobs:
           name: Test results (${{ matrix.testMode }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
 
-
  buildWebGL:
     needs: testRunner
     name: Build for WebGL 🖥️
